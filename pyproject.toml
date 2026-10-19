@@ -1,0 +1,36 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "datadiff-agent"
+version = "0.1.0"
+description = "An AI agent that guards data pipelines: it inspects each new batch with datadiff-engine, reasons about what changed, and decides whether to load, warn, or block."
+readme = "README.md"
+requires-python = ">=3.10"
+license = "MIT"
+license-files = ["LICENSE"]
+authors = [{ name = "Rohesen Rajkamal Maurya" }]
+
+dependencies = [
+    "datadiff-engine>=0.2.0",
+    "pandas>=2.0",
+    "openai>=1.40",
+]
+
+[project.optional-dependencies]
+mcp = ["mcp>=2.0"]
+dev = ["pytest>=8.0", "mcp>=2.0"]
+
+[project.scripts]
+datadiff-agent = "datadiff_agent.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+datadiff_agent = ["contract_specs/*.json"]
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+testpaths = ["tests"]
