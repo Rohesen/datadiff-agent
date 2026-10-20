@@ -1,8 +1,45 @@
-# datadiff-agent
+<p align="center">
+  <img src="docs/banner.svg" alt="datadiff-agent: an AI agent that guards data pipelines" width="100%">
+</p>
 
-**An AI agent that guards data pipelines.** Every new batch of data is compared with the last good batch using [datadiff-engine](https://pypi.org/project/datadiff-engine/). The agent investigates what changed, weighs it against the dataset's business contract and its memory of past incidents, and decides: **PASS** (load), **WARN** (load and alert), or **BLOCK** (quarantine for a human).
+<p align="center">
+  <a href="https://github.com/Rohesen/datadiff-agent/actions/workflows/ci.yml"><img src="https://github.com/Rohesen/datadiff-agent/actions/workflows/ci.yml/badge.svg" alt="CI"></a>
+  <img src="https://img.shields.io/badge/python-3.10%2B-3776AB?logo=python&logoColor=white" alt="Python 3.10+">
+  <a href="https://pypi.org/project/datadiff-engine/"><img src="https://img.shields.io/badge/built%20on-datadiff--engine-6366f1" alt="Built on datadiff-engine"></a>
+  <img src="https://img.shields.io/badge/MCP-server-111827" alt="MCP server">
+  <img src="https://img.shields.io/badge/LLM-Groq%20%7C%20OpenAI%20%7C%20Ollama%20%7C%20offline-0ea5e9" alt="LLM providers">
+  <img src="https://img.shields.io/badge/license-MIT-22c55e" alt="MIT license">
+</p>
 
-Bad data rarely crashes a pipeline. It loads quietly: a file arrives with fares in the wrong currency, a renamed column, or half the rows missing, and nobody notices until a report is wrong. Fixed rules catch some of this but raise too many false alarms. This agent combines datadiff-engine's checks with context and judgement, and stays inside hard guardrails.
+<p align="center">
+  <a href="#-quick-start">Quick start</a> ·
+  <a href="#-what-makes-it-an-agent">How it works</a> ·
+  <a href="#-architecture">Architecture</a> ·
+  <a href="#-use-it-in-a-real-pipeline">Use in a pipeline</a> ·
+  <a href="#-use-it-from-claude-mcp">MCP</a> ·
+  <a href="LEARNING.md">Learning guide</a>
+</p>
+
+---
+
+> **Bad data rarely crashes a pipeline. It loads quietly.** A file arrives with fares in the wrong currency, a renamed column, or half the rows missing, and nobody notices until a report is wrong.
+
+Every new batch is compared with the last good one using [datadiff-engine](https://pypi.org/project/datadiff-engine/). The agent investigates what changed, weighs it against the dataset's business contract and its memory of past incidents, then decides:
+
+| | Decision | What happens |
+|:-:|---|---|
+| 🟢 | **PASS** | Batch is loaded |
+| 🟡 | **WARN** | Batch is loaded, an alert and report go out |
+| 🔴 | **BLOCK** | Batch is quarantined until a human approves it |
+
+Fixed rules alone raise too many false alarms. This agent adds context and judgement, and stays inside hard guardrails.
+
+<p align="center">
+  <img src="docs/demo-week.svg" alt="Demo: a week of airline booking files, 7 of 7 decisions correct" width="900">
+</p>
+
+<details>
+<summary><b>See the agent's reasoning on day 4 (fares switched to USD)</b></summary>
 
 ```text
 ── Day 4: fares switched to USD (bookings_2026-10-04.csv)
@@ -23,7 +60,9 @@ Bad data rarely crashes a pipeline. It loads quietly: a file arrives with fares 
 
 *(Output of `datadiff-agent demo -v` in offline mode.)*
 
-## What makes it an agent
+</details>
+
+## 🧠 What makes it an agent
 
 | Capability | How it's done here | Where |
 |---|---|---|
@@ -38,7 +77,7 @@ Bad data rarely crashes a pipeline. It loads quietly: a file arrives with fares 
 | **MCP server** | Exposes datadiff-engine to Claude Desktop, Claude Code or any MCP client, with path sandboxing | [`mcp_server.py`](src/datadiff_agent/mcp_server.py) |
 | **Model-agnostic** | Groq, OpenAI, Ollama (any OpenAI-compatible API), or a fully offline rule-based planner | [`llm.py`](src/datadiff_agent/llm.py) |
 
-## Architecture
+## 🏗️ Architecture
 
 ```mermaid
 flowchart LR
@@ -60,7 +99,7 @@ flowchart LR
     F[Human feedback] --> M
 ```
 
-## Quick start
+## 🚀 Quick start
 
 Requires Python 3.10+ and datadiff-engine 0.2.0 or later.
 
@@ -74,12 +113,12 @@ The demo runs a week of synthetic airline booking files through the pipeline:
 | Day | What happened to the file | Agent |
 |---|---|---|
 | 1 | Normal (becomes the baseline) | loaded |
-| 2 | Normal day-to-day variation | **PASS** |
-| 3 | `passenger_email` 35% missing (CRM-only column) | **WARN** |
-| 4 | Fares switched from OMR to USD | **BLOCK** |
-| 5 | `fare_amount` renamed to `total_fare` | **BLOCK** |
-| 6 | Partial file, 70% of rows missing | **BLOCK** |
-| 7 | Same email gap as day 3, after a person marked it as a known issue | **PASS** (memory) |
+| 2 | Normal day-to-day variation | 🟢 **PASS** |
+| 3 | `passenger_email` 35% missing (CRM-only column) | 🟡 **WARN** |
+| 4 | Fares switched from OMR to USD | 🔴 **BLOCK** |
+| 5 | `fare_amount` renamed to `total_fare` | 🔴 **BLOCK** |
+| 6 | Partial file, 70% of rows missing | 🔴 **BLOCK** |
+| 7 | Same email gap as day 3, after a person marked it as a known issue | 🟢 **PASS** (memory) |
 
 Add `-v` to see every tool call, or `--interactive` to approve or reject blocked batches yourself.
 
@@ -109,7 +148,7 @@ datadiff-agent history                          # past decisions + feedback
 datadiff-agent feedback 12 false_positive --note "known CRM gap"
 ```
 
-## Use it in a real pipeline
+## 🔌 Use it in a real pipeline
 
 The agent is a quality gate in front of your load step. On Databricks, Airflow or any scheduler:
 
@@ -136,7 +175,7 @@ if result.decision == "BLOCK":
 
 Or call the CLI from any shell step and use the exit code.
 
-## Use it from Claude (MCP)
+## 🤖 Use it from Claude (MCP)
 
 ```bash
 pip install -e ".[mcp]"
@@ -158,11 +197,11 @@ Claude Desktop (`claude_desktop_config.json`):
 
 Then ask: *"Compare yesterday's and today's bookings file and tell me if it's safe to load."* The server can only read files inside `--data-root`.
 
-## Write a contract for your dataset
+## 📜 Write a contract for your dataset
 
 Copy [`src/datadiff_agent/contract_specs/bookings.json`](src/datadiff_agent/contract_specs/bookings.json) and edit it. Mark columns that feed business reports as `critical`, mark IDs as `identifier` (skipped for numeric drift), and tune the thresholds. The better the contract, the better the decisions.
 
-## Design decisions
+## 🧭 Design decisions
 
 - **The final answer is a tool call.** `submit_decision` has a JSON schema, so the decision is validated before it's trusted, and invalid output is sent back to the model to fix.
 - **Rules constrain the model, never the other way round.** The model may be stricter than the guardrails but never more lenient. An agent that can't decide within its step budget blocks the batch: fail closed.
@@ -170,7 +209,7 @@ Copy [`src/datadiff_agent/contract_specs/bookings.json`](src/datadiff_agent/cont
 - **WARN batches are loaded but don't become the baseline**, so a problem never quietly becomes the new normal.
 - **Learning from feedback is explicit.** No retraining: human verdicts are stored and shown to the model as history, and the effect is visible and auditable.
 
-## Development
+## 🛠️ Development
 
 ```bash
 pip install -e ".[dev]"
@@ -179,7 +218,7 @@ pytest
 
 The tests cover the agent loop with scripted and misbehaving models (a model that always says PASS is overruled, a model that never decides fails closed, invalid decisions are corrected), the real-LLM code path with a fake OpenAI client, memory, guardrails, the full demo pipeline, the CLI and the MCP server.
 
-## Roadmap
+## 🗺️ Roadmap
 
 - [ ] Evaluation harness: score LLM vs. offline decisions across many generated scenarios
 - [ ] Statistical drift tools (KS test, PSI) the agent can call for a second opinion
@@ -187,6 +226,8 @@ The tests cover the agent loop with scripted and misbehaving models (a model tha
 - [ ] Spark DataFrame support without converting to pandas
 - [ ] LangGraph and Google ADK versions of the agent loop
 
-## License
+## 📄 License
 
 MIT · Built on [datadiff-engine](https://github.com/Rohesen/datadiff-engine).
+
+<p align="center"><sub>Made by <a href="https://github.com/Rohesen">Rohesen Rajkamal Maurya</a> · if this is useful, a ⭐ helps</sub></p>
