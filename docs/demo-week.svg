@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="420" viewBox="0 0 1000 420" font-family="JetBrains Mono, Consolas, Menlo, monospace" font-size="16">
+  <rect width="1000" height="420" rx="14" fill="#0f172a"/>
+  <rect width="1000" height="42" rx="14" fill="#1e293b"/>
+  <rect y="28" width="1000" height="14" fill="#1e293b"/>
+  <circle cx="26" cy="21" r="7" fill="#ef4444"/><circle cx="50" cy="21" r="7" fill="#f59e0b"/><circle cx="74" cy="21" r="7" fill="#22c55e"/>
+  <text x="500" y="27" text-anchor="middle" fill="#94a3b8" font-size="14">datadiff-agent demo  ·  offline mode, no API key</text>
+
+  <text x="30" y="82" fill="#64748b">$</text><text x="50" y="82" fill="#e2e8f0">datadiff-agent demo</text>
+
+  <g fill="#94a3b8" font-weight="700">
+    <text x="30" y="124">Day</text><text x="100" y="124">What happened to the file</text><text x="560" y="124">Expected</text><text x="690" y="124">Agent</text><text x="820" y="124">Loaded</text>
+  </g>
+  <line x1="30" y1="136" x2="970" y2="136" stroke="#334155"/>
+
+  <g fill="#e2e8f0">
+    <text x="42" y="168">1</text><text x="100" y="168">normal day (baseline)</text><text x="560" y="168" fill="#94a3b8">LOAD</text><text x="690" y="168" fill="#94a3b8">LOAD</text><text x="820" y="168">yes ✓</text>
+    <text x="42" y="202">2</text><text x="100" y="202">normal day-to-day variation</text><text x="560" y="202" fill="#94a3b8">PASS</text><text x="690" y="202" fill="#4ade80" font-weight="700">PASS</text><text x="820" y="202">yes ✓</text>
+    <text x="42" y="236">3</text><text x="100" y="236">passenger_email mostly missing</text><text x="560" y="236" fill="#94a3b8">WARN</text><text x="690" y="236" fill="#fbbf24" font-weight="700">WARN</text><text x="820" y="236">yes ✓</text>
+    <text x="42" y="270">4</text><text x="100" y="270">fares switched to USD</text><text x="560" y="270" fill="#94a3b8">BLOCK</text><text x="690" y="270" fill="#f87171" font-weight="700">BLOCK</text><text x="820" y="270">no  ✓</text>
+    <text x="42" y="304">5</text><text x="100" y="304">fare_amount renamed to total_fare</text><text x="560" y="304" fill="#94a3b8">BLOCK</text><text x="690" y="304" fill="#f87171" font-weight="700">BLOCK</text><text x="820" y="304">no  ✓</text>
+    <text x="42" y="338">6</text><text x="100" y="338">partial file (transfer cut off)</text><text x="560" y="338" fill="#94a3b8">BLOCK</text><text x="690" y="338" fill="#f87171" font-weight="700">BLOCK</text><text x="820" y="338">no  ✓</text>
+    <text x="42" y="372">7</text><text x="100" y="372">email gap again, now a known issue</text><text x="560" y="372" fill="#94a3b8">PASS</text><text x="690" y="372" fill="#4ade80" font-weight="700">PASS</text><text x="820" y="372">yes ✓</text>
+  </g>
+  <text x="30" y="404" fill="#64748b" font-size="14">7/7 correct · day 7 passes because a human marked the email gap as expected (memory)</text>
+</svg>

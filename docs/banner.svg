@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="320" viewBox="0 0 1200 320" font-family="Segoe UI, Inter, Helvetica Neue, Arial, sans-serif">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#0b1220"/>
+      <stop offset="1" stop-color="#1e1b4b"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="0.85" cy="0.2" r="0.6">
+      <stop offset="0" stop-color="#6366f1" stop-opacity="0.45"/>
+      <stop offset="1" stop-color="#6366f1" stop-opacity="0"/>
+    </radialGradient>
+    <pattern id="grid" width="32" height="32" patternUnits="userSpaceOnUse">
+      <path d="M32 0 L0 0 0 32" fill="none" stroke="#ffffff" stroke-opacity="0.04"/>
+    </pattern>
+  </defs>
+  <rect width="1200" height="320" rx="18" fill="url(#bg)"/>
+  <rect width="1200" height="320" rx="18" fill="url(#grid)"/>
+  <rect width="1200" height="320" rx="18" fill="url(#glow)"/>
+
+  <!-- shield icon -->
+  <g transform="translate(70 92)">
+    <path d="M60 0 L116 22 V66 C116 104 92 128 60 140 C28 128 4 104 4 66 V22 Z" fill="#312e81" stroke="#818cf8" stroke-width="3"/>
+    <path d="M34 70 L52 88 L88 50" fill="none" stroke="#a5f3fc" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+
+  <text x="230" y="140" font-size="60" font-weight="700" fill="#f8fafc">datadiff-agent</text>
+  <text x="232" y="184" font-size="23" fill="#c7d2fe">An AI agent that guards data pipelines before bad data loads</text>
+
+  <g font-size="17" font-weight="700" font-family="JetBrains Mono, Consolas, monospace">
+    <rect x="232" y="214" width="104" height="38" rx="19" fill="#052e1b" stroke="#22c55e"/>
+    <text x="284" y="239" text-anchor="middle" fill="#4ade80">PASS</text>
+    <rect x="350" y="214" width="104" height="38" rx="19" fill="#2e2105" stroke="#f59e0b"/>
+    <text x="402" y="239" text-anchor="middle" fill="#fbbf24">WARN</text>
+    <rect x="468" y="214" width="112" height="38" rx="19" fill="#2e0a0a" stroke="#ef4444"/>
+    <text x="524" y="239" text-anchor="middle" fill="#f87171">BLOCK</text>
+  </g>
+  <text x="600" y="239" font-size="16" fill="#94a3b8">tool use · memory · guardrails · human-in-the-loop · MCP</text>
+</svg>
