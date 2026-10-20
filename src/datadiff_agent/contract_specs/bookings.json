@@ -1,0 +1,60 @@
+{
+  "name": "bookings",
+  "description": "Daily flight bookings file delivered by the reservation system over SFTP. One row per booking.",
+  "owner": "data-engineering",
+  "downstream": [
+    "Daily Revenue report (Power BI)",
+    "Route Performance report (Power BI)",
+    "Ancillary Sales report (Power BI)"
+  ],
+  "columns": {
+    "booking_id": {
+      "description": "Unique booking reference.",
+      "critical": true,
+      "identifier": true
+    },
+    "booking_date": {
+      "description": "Date the booking was made (YYYY-MM-DD).",
+      "critical": true
+    },
+    "origin": {
+      "description": "Origin airport IATA code.",
+      "critical": true
+    },
+    "destination": {
+      "description": "Destination airport IATA code.",
+      "critical": true
+    },
+    "fare_amount": {
+      "description": "Total fare paid, in OMR. Feeds every revenue figure.",
+      "critical": true
+    },
+    "currency": {
+      "description": "ISO currency code of fare_amount. Expected to be OMR.",
+      "critical": true
+    },
+    "pax_count": {
+      "description": "Number of passengers on the booking.",
+      "critical": false
+    },
+    "channel": {
+      "description": "Sales channel: web, app, agent or call_center.",
+      "critical": false
+    },
+    "payment_status": {
+      "description": "PAID, PENDING or REFUNDED.",
+      "critical": false
+    },
+    "passenger_email": {
+      "description": "Lead passenger contact email. Used by CRM, not by finance reports.",
+      "critical": false
+    }
+  },
+  "thresholds": {
+    "warning_null_rate": 0.05,
+    "critical_null_rate": 0.20,
+    "drift_threshold_pct": 25.0,
+    "warning_row_change_pct": 30.0,
+    "critical_row_change_pct": 60.0
+  }
+}
