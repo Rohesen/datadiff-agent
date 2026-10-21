@@ -79,8 +79,8 @@ Fixed rules alone raise too many false alarms. This agent adds context and judge
 
 ## 🏗️ Architecture
 
-``` mermaid
-flowchart LR
+```mermaid
+ flowchart LR
     SFTP[New batch lands] --> A
     subgraph A[datadiff-agent]
         direction TB
